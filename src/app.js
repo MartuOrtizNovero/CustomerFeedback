@@ -8,14 +8,14 @@ const app = new App({// Inicialidando la App
     signingSecret: slackConfiguration.SLACK_SIGNING_SECRET,
     socketMode: true,
     appToken: slackConfiguration.SLACK_APP_TOKEN,
-    // Socket Mode doesn't listen on a port, but in case you want your app to respond to OAuth,
-    // you still need to listen on some port!
+    // El Modo Socket no escucha en un puerto, pero en caso de que quieras que tu aplicación responda a OAuth,
+    // ¡todavía necesitas escuchar en algún puerto!
     port: process.env.PORT || 3000
 });
 
 app.message('hello', async ({ message, say }) => {// Metodo que responde con un saludo a HELLO!
-    // say() sends a message to the channel where the event was triggered
-    //await say(`Hey there <@${message.user}>!`);
+    // say() envía un mensaje al canal donde se activó el evento
+    //espera say(`¡Hey there <@${message.user}>!`);
     await say({
         blocks: [
             {
@@ -39,12 +39,12 @@ app.message('hello', async ({ message, say }) => {// Metodo que responde con un 
 });
 
 app.action('button_click', async ({ body, ack, say }) => {// Boton para realizar acciones
-    // Acknowledge the action
+    // Reconocer la acción
     await ack();
     await say(`<@${body.user.id}> clicked the button`);
 });
 
-// Listens to incoming messages that contain "hello"
+// Escucha los mensajes entrantes que contienen "hello"
 (async () => {
     // Start your app
     await app.start();
@@ -57,14 +57,15 @@ app.action('button_click', async ({ body, ack, say }) => {// Boton para realizar
 // tocken dos xapp-1-A0430GGP0SE-4121145490099-5777c8354d4d110fadb1d0cb48ed4cfd96a2380c47f86b446e8dd429a333558f
 
 
-// Find conversation ID using the conversations.list method
+// Encuentra el ID de la conversación usando el método conversations.list
 
 async function findConversation(name) {// Metodo que recibe los canales publicos del usuario para tener info de los canales
+    // EN BASE A LOS QUE RECIBO MAS ABAJO SELECCIONO AL QUE QUIERO ENVIAR LOS MENSAJES: GENERAL
     // console.log('NOMBRE CANAL',name)
     try {
-        // Call the conversations.list method using the built-in WebClient
+        // Llamar al método conversations.list utilizando el WebClient incorporado
         const result = await app.client.conversations.list({
-            // The token you used to initialize your app
+           // El token que usaste para inicializar tu aplicación
             token: slackConfiguration.SLACK_BOT_TOKEN
         });
 
@@ -72,9 +73,9 @@ async function findConversation(name) {// Metodo que recibe los canales publicos
             if (channel.name === name) {
                 conversationId = channel.id;
 
-                // Print result
+                // Imprimir el resultado
                 console.log("Found conversation ID: " + conversationId);
-                // Break from for loop
+                // Romper el bucle for
                 // console.log(channel.name)
                 break;
             }
@@ -86,24 +87,24 @@ async function findConversation(name) {// Metodo que recibe los canales publicos
     }
 }
 
-// Find conversation with a specified channel `name`
+// Encontrar una conversación con un canal especificado `nombre`
 findConversation("general");// DAR POSIBILIDAD DE ELEGIR EL CANAL QUE DESEA PUBLICAR POR EL FRONT
 
 
-//Post a message to a channel your app is in using ID and message text
+//Publicar un mensaje en un canal en el que esté tu aplicación utilizando el ID y el texto del mensaje
 
 async function publishMessage(id, text) {// METODO PARA PUBLICAR MENSAJES 
     try {
-        //Call the chat.postMessage method using the built-in WebClient
+      //Llamar al método chat.postMessage usando el WebClient incorporado
         const result = await app.client.chat.postMessage({
-            //The token you used to initialize your app
+            //El token que has utilizado para inicializar tu aplicación
             token: slackConfiguration.SLACK_BOT_TOKEN,
             channel: id,
             text: text
-            //You could also use a blocks[] array to send richer content
+            
         });
 
-        // Print result, which includes information about the message (like TS)
+        // Imprime el resultado, que incluye información sobre el mensaje 
         console.log(result);
     }
     catch (error) {
@@ -111,24 +112,24 @@ async function publishMessage(id, text) {// METODO PARA PUBLICAR MENSAJES
     }
 }
 
-publishMessage("C0430DSS49Y", "Hello world :tada:");
+publishMessage("C0430DSS49Y", "Hello world :tada:");// Aca esta especificado el canael GENERAL
 
 
 
 //CON ESTE METODO INTENTO SACAR EL ACCES TOCKEN DEL USUARIO Y DAR AUTORIZACION POR PARTE DEL USUARIO, FALTA TERMINAR
-getAuth().catch(err => console.log(err));
+/* getAuth().catch(err => console.log(err));
 
-async function getAuth() {
+async function getAuth() { */
 
     // let code = request.queryParams.code
-    const url = "https://slack.com/api/oauth.access";
+   /*  const url = "https://slack.com/api/oauth.access";
     const res = await axios.post(url, {
         client_id: '4095852945846.4102560782898',
         client_secret: '958b4300f20888eeeb880f49e545e3e6',
         //  code : code FALTA RECIBIR ESTE CODIGO DE LOS QUERY PARAMS
-    });
-    console.log(res)
-}
+    }); */
+    //console.log(res)
+//}
 
 
 
