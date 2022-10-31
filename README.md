@@ -1,4 +1,4 @@
-//------------------------------------Integracion con SLACK - Cfeedback--------------------------------------------------------//
+//------------------------------------Integracion con SLACK - Cfeedback-------------------------------------------------//
 
 En slack_configuration.json estan las variables de entorno que hay que COMPLETAR creando una nueva Aplicacion de Slack
 te va a ir dando los diferentes tokens para funcionar.
